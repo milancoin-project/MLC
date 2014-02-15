@@ -1,0 +1,133 @@
+# Copyright (c) 2009-2010 Satoshi Nakamoto
+# Distributed under the MIT/X11 software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+USE_UPNP:=0
+USE_IPV6:=1
+
+BOOST_SUFFIX?=-mgw46-mt-s-1_54
+
+INCLUDEPATHS= \
+ -I"$(CURDIR)" \
+ -I"$(DEPSDIR)/include"\
+ -I"V:/bibibi/soft/boost_1_54_0" \
+ -I"V:/bibibi/soft/db-4.8.30.NC/build_unix" \
+ -I"V:/bibibi/soft/openssl-1.0.1c/include"
+
+LIBPATHS= \
+ -L"$(DEPSDIR)/lib"\
+ -L"V:/bibibi/soft/boost_1_54_0/stage/lib" \
+ -L"V:/bibibi/soft/db-4.8.30.NC/build_unix" \
+ -L"V:/bibibi/soft/openssl-1.0.1c"
+
+LIBS= \
+ -l boost_system$(BOOST_SUFFIX) \
+ -l boost_filesystem$(BOOST_SUFFIX) \
+ -l boost_program_options$(BOOST_SUFFIX) \
+ -l boost_thread$(BOOST_SUFFIX) \
+ -l boost_chrono$(BOOST_SUFFIX) \
+ -l db_cxx \
+ -l ssl \
+ -l crypto
+
+DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE
+# DEBUGFLAGS=-g
+CFLAGS=-static -mthreads -O2 -msse2 -w -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
+
+LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat
+
+# This are the scrypt-jane specific parameters needed to compile you can use -msse2 if you don't have sse3
+DEFS_JANE=-DSCRYPT_KECCAK512 -DSCRYPT_CHACHA -DSCRYPT_CHOOSE_COMPILETIME -O3 -msse3
+
+TESTDEFS = -DTEST_DATA_DIR=$(abspath test/data)
+
+ifndef USE_UPNP
+	override USE_UPNP = -
+endif
+ifneq (${USE_UPNP}, -)
+ INCLUDEPATHS += -I"V:\bibibi\soft\miniupnpc-1.6"
+ LIBPATHS += -L"V:\bibibi\soft\miniupnpc-1.6"
+ LIBS += -l miniupnpc -l iphlpapi
+ DEFS += -DSTATICLIB -DUSE_UPNP=$(USE_UPNP)
+endif
+
+ifneq (${USE_IPV6}, -)
+	DEFS += -DUSE_IPV6=$(USE_IPV6)
+endif
+
+LIBS += -l kernel32 -l user32 -l gdi32 -l comdlg32 -l winspool -l winmm -l shell32 -l comctl32 -l ole32 -l oleaut32 -l uuid -l rpcrt4 -l advapi32 -l ws2_32 -l mswsock -l shlwapi
+
+# TODO: make the mingw builds smarter about dependencies, like the linux/osx builds are
+HEADERS = $(wildcard *.h)
+
+# Notice I added the scrypt-jane obj at the end
+OBJS= \
+    obj/alert.o \
+    obj/version.o \
+    obj/checkpoints.o \
+    obj/netbase.o \
+    obj/addrman.o \
+    obj/crypter.o \
+    obj/key.o \
+    obj/db.o \
+    obj/init.o \
+    obj/irc.o \
+    obj/keystore.o \
+    obj/main.o \
+    obj/net.o \
+    obj/protocol.o \
+    obj/bitcoinrpc.o \
+    obj/rpcdump.o \
+    obj/rpcnet.o \
+    obj/rpcmining.o \
+    obj/rpcwallet.o \
+    obj/rpcblockchain.o \
+    obj/rpcrawtransaction.o \
+    obj/script.o \
+    obj/sync.o \
+    obj/util.o \
+    obj/wallet.o \
+    obj/walletdb.o \
+    obj/noui.o \
+    obj/kernel.o \
+    obj/pbkdf2.o \
+    obj/scrypt_mine.o \
+    obj/scrypt-x86.o \
+    obj/scrypt-x86_64.o \
+	obj/scrypt-jane.o
+
+all: milancoind.exe
+
+test check: test_milancoin.exe FORCE
+	test_milancoin.exe
+
+obj/%.o: %.cpp $(HEADERS)
+	g++ -c $(CFLAGS) -o $@ $<
+
+obj/scrypt-x86.o: scrypt-x86.S
+	$(CXX) -c $(xCXXFLAGS) -MMD -o $@ $<
+
+obj/scrypt-x86_64.o: scrypt-x86_64.S
+	$(CXX) -c $(xCXXFLAGS) -MMD -o $@ $<
+
+# This is needed to compile scrypt-jane with the DEFS_JANE we set before
+obj/scrypt-jane.o: scrypt-jane/scrypt-jane.c
+	gcc -c $(xCXXFLAGS_SCRYPT_JANE) $(DEFS_JANE) -MMD -o $@ $<
+
+milancoind.exe: $(OBJS:obj/%=obj/%)
+	g++ $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ $(LIBS)
+
+TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
+
+obj-test/%.o: test/%.cpp $(HEADERS)
+	g++ -c $(TESTDEFS) $(CFLAGS) -o $@ $<
+
+test_bitcoin.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
+	g++ $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ -lboost_unit_test_framework $(LIBS)
+
+clean:
+	rm milancoind.exe -f
+	rm obj/*.*
+	rm obj-test/*.*
+
+FORCE:
