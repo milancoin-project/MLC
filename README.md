@@ -112,7 +112,7 @@
     如果值大于0，说明已经正常开挖了
 
 	方法二，使用显卡矿池挖矿
-	http://milancoin.org/pool5 访问矿池并注册登陆，创建矿工
+	http://milancoin.org/pool 访问矿池并注册登陆，创建矿工
 	下载并解压 gpuminer1.2.rar
 	修改 start.bat 文件和你的矿工相一致
 	MilancoinMiner.exe -o stratum+tcp://109.169.70.125:3333 -u username.wokername -p wokerpass --scrypt -I 13 --Nfmax 30  --StartT 1387756800
