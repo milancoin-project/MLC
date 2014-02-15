@@ -85,6 +85,9 @@ V:\bibibi\src\siry\src\
          -I"../../miniupnpc-1.8"
 
 V:\bibibi\src\siry\src
+<<centos cmd>>
+	make -f makefile.unix CXX=g++44
+
 <<windows cmd>>
 	cd V:\bibibi\src\siry\src
         mingw32-make -f makefile.mingw
