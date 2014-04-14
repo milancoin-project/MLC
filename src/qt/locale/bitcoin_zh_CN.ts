@@ -15,7 +15,7 @@
     <message>
         <location line="+41"/>
         <source>Copyright ? 2009-2012 The Milancoin developers</source>
-        <translation>版权所有?2009-2012 MLC的开发</translation>
+        <translation>版权所有?2009-2014 MLC的开发</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -25,9 +25,7 @@ This is experimental software.
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>版权归米兰币开发者所有  ? 2011-2013 Milancoin Developers
-
-这是一个实验性软件。
+        <translation>版权归米兰币开发者所有  ? 2011-2014 Milancoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 

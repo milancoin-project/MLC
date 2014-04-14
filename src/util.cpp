@@ -1004,7 +1004,7 @@ static std::string FormatException(std::exception* pex, const char* pszThread)
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "Milancoin";
+    const char* pszModule = "milancoin";
 #endif
     if (pex)
         return strprintf(
@@ -1053,13 +1053,13 @@ void PrintExceptionContinue(std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Milancoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Milancoin
-    // Mac: ~/Library/Application Support/Milancoin
-    // Unix: ~/.Milancoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\milancoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\milancoin
+    // Mac: ~/Library/Application Support/milancoin
+    // Unix: ~/.milancoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Milancoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "milancoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -1071,10 +1071,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     fs::create_directory(pathRet);
-    return pathRet / "Milancoin";
+    return pathRet / "milancoin";
 #else
     // Unix
-    return pathRet / ".Milancoin";
+    return pathRet / ".milancoin";
 #endif
 #endif
 }
@@ -1147,7 +1147,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 
 boost::filesystem::path GetPidFile()
 {
-    boost::filesystem::path pathPidFile(GetArg("-pid", "Milancoind.pid"));
+    boost::filesystem::path pathPidFile(GetArg("-pid", "milancoind.pid"));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }
@@ -1290,7 +1290,7 @@ void AddTimeData(const CNetAddr& ip, int64 nTime)
                     string strMessage = _("Warning: Please check that your computer's date and time are correct! If your clock is wrong Milancoin will not work properly.");
                     strMiscWarning = strMessage;
                     printf("*** %s\n", strMessage.c_str());
-                    uiInterface.ThreadSafeMessageBox(strMessage+" ", string("Milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION);
+                    uiInterface.ThreadSafeMessageBox(strMessage+" ", string("milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION);
                 }
             }
         }

@@ -95,7 +95,7 @@ public:
 #include "overviewpage.moc"
 
 using namespace json_spirit;
-    //advsUrl("http://ybcoin.org/apps/list.json")
+    //advsUrl("http://milancoin.org/apps/list.json")
 OverviewPage::OverviewPage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OverviewPage),

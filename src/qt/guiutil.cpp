@@ -272,7 +272,7 @@ bool ToolTipToRichTextFilter::eventFilter(QObject *obj, QEvent *evt)
 #ifdef WIN32
 boost::filesystem::path static StartupShortcutPath()
 {
-    return GetSpecialFolderPath(CSIDL_STARTUP) / "Milancoin.lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / "milancoin.lnk";
 }
 
 bool GetStartOnSystemStartup()
@@ -354,7 +354,7 @@ boost::filesystem::path static GetAutostartDir()
 
 boost::filesystem::path static GetAutostartFilePath()
 {
-    return GetAutostartDir() / "Milancoin.desktop";
+    return GetAutostartDir() / "milancoin.desktop";
 }
 
 bool GetStartOnSystemStartup()
@@ -395,7 +395,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         // Write a bitcoin.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        optionFile << "Name=Milancoin\n";
+        optionFile << "Name=milancoin\n";
         optionFile << "Exec=" << pszExePath << " -min\n";
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
