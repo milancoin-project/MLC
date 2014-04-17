@@ -646,7 +646,7 @@ bool AppInit2()
         AddOneShot(strDest);
 
     // TODO: replace this by DNSseed
-    AddOneShot(string("67.23.234.59"));
+    AddOneShot(string("121.196.142.164"));
 
     // ********************************************************* Step 7: load blockchain
 

@@ -1147,6 +1147,7 @@ void MapPort()
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
+    {"dnsseed.milancoin.com", "121.196.142.164"},
     {"dnsseed.milancoin.org", "67.23.234.59"},
     {NULL, NULL}
 };
@@ -1219,7 +1220,7 @@ void ThreadDNSAddressSeed2(void* parg)
 
 unsigned int pnSeed[] =
 {
-    0x3BEA1743,
+    0xA48EC479,0x3BEA1743,
 };
 
 void DumpAddresses()
