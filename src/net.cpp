@@ -1147,8 +1147,8 @@ void MapPort()
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
-    {"dnsseed.milancoin.org", "vps.milancoin.org"},
-    {"dnsseed1.milancoin.org", "109.169.76.45"},
+    {"dnsseed.milancoin.org", "109.169.76.45"},
+	{"dnsseed.milancoin.com", "67.23.234.59"},
     {NULL, NULL}
 };
 
