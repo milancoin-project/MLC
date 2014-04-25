@@ -1828,10 +1828,8 @@ bool static Reorganize(CTxDB& txdb, CBlockIndex* pindexNew)
         tx.AcceptToMemoryPool(txdb, false);
 
     // Delete redundant memory transactions that are in the connected branch
-    BOOST_FOREACH(CTransaction& tx, vDelete) {
+    BOOST_FOREACH(CTransaction& tx, vDelete)
         mempool.remove(tx);
-        mempool.removeConflicts(tx);
-    }
 
     printf("REORGANIZE: done\n");
 
@@ -1858,8 +1856,10 @@ bool CBlock::SetBestChainInner(CTxDB& txdb, CBlockIndex *pindexNew)
     pindexNew->pprev->pnext = pindexNew;
 
     // Delete redundant memory transactions
-    BOOST_FOREACH(CTransaction& tx, vtx)
+    BOOST_FOREACH(CTransaction& tx, vtx){
         mempool.remove(tx);
+        mempool.removeConflicts(tx);
+    }
 
     return true;
 }
@@ -3505,6 +3505,23 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             vInv.push_back(inv);
             if (i == (MAX_INV_SZ - 1))
                     break;
+        }
+        if (vInv.size() > 0)
+            pfrom->PushMessage("inv", vInv);
+    }
+
+
+    else if (strCommand == "mempool")
+    {
+        std::vector<uint256> vtxid;
+        LOCK(mempool.cs);
+        mempool.queryHashes(vtxid);
+        vector<CInv> vInv;
+        BOOST_FOREACH(uint256& hash, vtxid) {
+            CInv inv(MSG_TX, hash);
+            vInv.push_back(inv);
+            if (vInv.size() == MAX_INV_SZ)
+                break;
         }
         if (vInv.size() > 0)
             pfrom->PushMessage("inv", vInv);
