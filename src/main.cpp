@@ -728,7 +728,7 @@ bool CTxMemPool::addUnchecked(const uint256& hash, CTransaction &tx)
 }
 
 
-bool CTxMemPool::remove(CTransaction &tx)
+bool CTxMemPool::remove(const CTransaction &tx, bool fRecursive)
 {
     // Remove transaction from memory pool
     {
@@ -736,10 +736,32 @@ bool CTxMemPool::remove(CTransaction &tx)
         uint256 hash = tx.GetHash();
         if (mapTx.count(hash))
         {
+            if (fRecursive) {
+                for (unsigned int i = 0; i < tx.vout.size(); i++) {
+                    std::map<COutPoint, CInPoint>::iterator it = mapNextTx.find(COutPoint(hash, i));
+                    if (it != mapNextTx.end())
+                        remove(*it->second.ptx, true);
+                }
+            }
             BOOST_FOREACH(const CTxIn& txin, tx.vin)
                 mapNextTx.erase(txin.prevout);
             mapTx.erase(hash);
             nTransactionsUpdated++;
+        }
+    }
+    return true;
+}
+
+bool CTxMemPool::removeConflicts(const CTransaction &tx)
+{
+    // Remove transactions which depend on inputs of tx, recursively
+    LOCK(cs);
+    BOOST_FOREACH(const CTxIn &txin, tx.vin) {
+        std::map<COutPoint, CInPoint>::iterator it = mapNextTx.find(txin.prevout);
+        if (it != mapNextTx.end()) {
+            const CTransaction &txConflict = *it->second.ptx;
+            if (txConflict != tx)
+                remove(txConflict, true);
         }
     }
     return true;
@@ -967,7 +989,7 @@ unsigned char GetNfactor(int64 nTimestamp) {
     int l = 0;
 
     if (nTimestamp <= nChainStartTime)
-        return 4;
+        return 30;
 
     int64 s = nTimestamp - nChainStartTime;
     while ((s >> 1) > 3) {
@@ -1806,8 +1828,10 @@ bool static Reorganize(CTxDB& txdb, CBlockIndex* pindexNew)
         tx.AcceptToMemoryPool(txdb, false);
 
     // Delete redundant memory transactions that are in the connected branch
-    BOOST_FOREACH(CTransaction& tx, vDelete)
+    BOOST_FOREACH(CTransaction& tx, vDelete) {
         mempool.remove(tx);
+        mempool.removeConflicts(tx);
+    }
 
     printf("REORGANIZE: done\n");
 
