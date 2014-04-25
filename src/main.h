@@ -1596,8 +1596,7 @@ public:
     bool accept(CTxDB& txdb, CTransaction &tx,
                 bool fCheckInputs, bool* pfMissingInputs);
     bool addUnchecked(const uint256& hash, CTransaction &tx);
-    bool remove(const CTransaction &tx, bool fRecursive = false);
-    bool removeConflicts(const CTransaction &tx);
+    bool remove(CTransaction &tx);
     void clear();
     void queryHashes(std::vector<uint256>& vtxid);
 

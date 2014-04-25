@@ -244,7 +244,7 @@ void MiningPage::minerFinished()
     ui->list->addItem("");
     minerActive = false;
     resetMiningButton();
-	enablePoolMiningControls(false);
+
     clientModel->setMining(getMiningType(), false, initThreads, 0);
 }
 

@@ -270,7 +270,7 @@ void RPCConsole::setClientModel(ClientModel *model)
 
         setNumConnections(model->getNumConnections());
         ui->isTestNet->setChecked(model->isTestNet());
-        ui->lineEdit->setText("setgenerate true -1");
+
         setNumBlocks(model->getNumBlocks(), model->getNumBlocksOfPeers());
     }
 }
