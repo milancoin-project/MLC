@@ -1583,7 +1583,7 @@ Value validatepubkey(const Array& params, bool fHelp)
 {
     if (fHelp || !params.size() || params.size() > 2)
         throw runtime_error(
-            "validatepubkey <Milancoinpubkey>\n"
+            "validatepubkey <milancoinpubkey>\n"
             "Return information about <milancoinpubkey>.");
 
     std::vector<unsigned char> vchPubKey = ParseHex(params[0].get_str());

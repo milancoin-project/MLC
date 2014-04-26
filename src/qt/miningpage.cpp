@@ -244,9 +244,9 @@ void MiningPage::minerFinished()
     ui->list->addItem("");
     minerActive = false;
     resetMiningButton();
-
     clientModel->setMining(getMiningType(), false, initThreads, 0);
 }
+
 
 void MiningPage::minerStarted()
 {

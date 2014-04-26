@@ -1059,7 +1059,7 @@ void ThreadMapPort2(void* parg)
             }
         }
 
-        string strDesc = "milancoin " + FormatFullVersion();
+        string strDesc = "Milancoin " + FormatFullVersion();
 #ifndef UPNPDISCOVER_SUCCESS
         /* miniupnpc 1.5 */
         r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
