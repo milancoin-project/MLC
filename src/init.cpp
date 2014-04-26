@@ -136,7 +136,7 @@ bool AppInit(int argc, char* argv[])
         if (mapArgs.count("-?") || mapArgs.count("--help"))
         {
             // First part of help message is specific to bitcoind / RPC client
-            std::string strUsage = _("Milancoin version") + " " + FormatFullVersion() + "\n\n" +
+            std::string strUsage = _("milancoin version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
                   "  milancoind [options]                     " + "\n" +
                   "  milancoind [options] <command> [params]  " + _("Send command to -server or milancoind") + "\n" +
@@ -151,7 +151,7 @@ bool AppInit(int argc, char* argv[])
 
         // Command-line RPC
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "Milancoin:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "milancoind:"))
                 fCommandLine = true;
 
         if (fCommandLine)
@@ -191,13 +191,13 @@ int main(int argc, char* argv[])
 
 bool static InitError(const std::string &str)
 {
-    uiInterface.ThreadSafeMessageBox(str, _("Milancoin"), CClientUIInterface::OK | CClientUIInterface::MODAL);
+    uiInterface.ThreadSafeMessageBox(str, _("milancoin"), CClientUIInterface::OK | CClientUIInterface::MODAL);
     return false;
 }
 
 bool static InitWarning(const std::string &str)
 {
-    uiInterface.ThreadSafeMessageBox(str, _("Milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+    uiInterface.ThreadSafeMessageBox(str, _("milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
     return true;
 }
 
@@ -517,7 +517,7 @@ bool AppInit2()
                                      " Original wallet.dat saved as wallet.{timestamp}.bak in %s; if"
                                      " your balance or transactions are incorrect you should"
                                      " restore from a backup."), strDataDir.c_str());
-            uiInterface.ThreadSafeMessageBox(msg, _("Milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+            uiInterface.ThreadSafeMessageBox(msg, _("milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         }
         if (r == CDBEnv::RECOVER_FAIL)
             return InitError(_("wallet.dat corrupt, salvage failed"));
@@ -727,7 +727,7 @@ bool AppInit2()
         {
             string msg(_("Warning: error reading wallet.dat! All keys read correctly, but transaction data"
                          " or address book entries might be missing or incorrect."));
-            uiInterface.ThreadSafeMessageBox(msg, _("Milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+            uiInterface.ThreadSafeMessageBox(msg, _("milancoin"), CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         }
         else if (nLoadWalletRet == DB_TOO_NEW)
             strErrors << _("Error loading wallet.dat: Wallet requires newer version of Milancoin") << "\n";

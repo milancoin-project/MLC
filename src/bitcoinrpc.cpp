@@ -303,7 +303,7 @@ string HTTPPost(const string& strMsg, const map<string,string>& mapRequestHeader
 {
     ostringstream s;
     s << "POST / HTTP/1.1\r\n"
-      << "User-Agent: Milancoin-json-rpc/" << FormatFullVersion() << "\r\n"
+      << "User-Agent: milancoin-json-rpc/" << FormatFullVersion() << "\r\n"
       << "Host: 127.0.0.1\r\n"
       << "Content-Type: application/json\r\n"
       << "Content-Length: " << strMsg.size() << "\r\n"
@@ -334,7 +334,7 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
     if (nStatus == HTTP_UNAUTHORIZED)
         return strprintf("HTTP/1.0 401 Authorization Required\r\n"
             "Date: %s\r\n"
-            "Server: Milancoin-json-rpc/%s\r\n"
+            "Server: milancoin-json-rpc/%s\r\n"
             "WWW-Authenticate: Basic realm=\"jsonrpc\"\r\n"
             "Content-Type: text/html\r\n"
             "Content-Length: 296\r\n"
@@ -361,7 +361,7 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
             "Connection: %s\r\n"
             "Content-Length: %"PRIszu"\r\n"
             "Content-Type: application/json\r\n"
-            "Server: Milancoin-json-rpc/%s\r\n"
+            "Server: milancoin-json-rpc/%s\r\n"
             "\r\n"
             "%s",
         nStatus,
@@ -632,7 +632,7 @@ private:
 void ThreadRPCServer(void* parg)
 {
     // Make this thread recognisable as the RPC listener
-    RenameThread("bitcoin-rpclist");
+    RenameThread("milancoin-rpclist");
 
     try
     {
@@ -735,7 +735,7 @@ void ThreadRPCServer2(void* parg)
     {
         unsigned char rand_pwd[32];
         RAND_bytes(rand_pwd, 32);
-        string strWhatAmI = "To use Milancoind";
+        string strWhatAmI = "To use milancoind";
         if (mapArgs.count("-server"))
             strWhatAmI = strprintf(_("To use the %s option"), "\"-server\"");
         else if (mapArgs.count("-daemon"))
@@ -935,7 +935,7 @@ static CCriticalSection cs_THREAD_RPCHANDLER;
 void ThreadRPCServer3(void* parg)
 {
     // Make this thread recognisable as the RPC handler
-    RenameThread("bitcoin-rpchand");
+    RenameThread("milancoin-rpchand");
 
     {
         LOCK(cs_THREAD_RPCHANDLER);
