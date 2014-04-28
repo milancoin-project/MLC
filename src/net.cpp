@@ -948,6 +948,8 @@ void ThreadSocketHandler2(void* parg)
                                 pnode->CloseSocketDisconnect();
                             }
                         }
+                        if (vSend.size() > SendBufferSize())
+                            printf("socket send buffer full warning (%d bytes)\n", vSend.size());
                     }
                 }
             }
