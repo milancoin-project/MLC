@@ -8,6 +8,8 @@
 *.egg-info
 dist
 build
+release
+debug
 eggs
 parts
 bin
@@ -15,6 +17,11 @@ var
 sdist
 develop-eggs
 .installed.cfg
+Makefile.Release
+Makefile.Debug
+object_script.Milancoin-qt.Debug
+object_script.Milancoin-qt.Release
+src/milancoind.exe
 lib
 lib64
 __pycache__
@@ -34,3 +41,4 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+!src/leveldb/Makefile

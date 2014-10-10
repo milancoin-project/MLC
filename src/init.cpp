@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Milancoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include "db.h"
+#include "txdb.h"
 #include "walletdb.h"
 #include "bitcoinrpc.h"
 #include "net.h"
@@ -26,6 +26,8 @@ using namespace boost;
 
 CWallet* pwalletMain;
 CClientUIInterface uiInterface;
+unsigned int nMinerSleep;
+bool fUseFastStakeMiner;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -73,6 +75,7 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
+//        CTxDB().Close();
         bitdb.Flush(false);
         StopNode();
         bitdb.Flush(true);
@@ -347,6 +350,8 @@ bool AppInit2()
 #endif
 
     // ********************************************************* Step 2: parameter interactions
+
+    nMinerSleep = GetArg("-minersleep", 500);
 
     fTestNet = GetBoolArg("-testnet");
     if (fTestNet) {
