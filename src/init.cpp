@@ -28,6 +28,7 @@ CWallet* pwalletMain;
 CClientUIInterface uiInterface;
 unsigned int nMinerSleep;
 bool fUseFastStakeMiner;
+bool fUseFastIndex;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -352,6 +353,7 @@ bool AppInit2()
     // ********************************************************* Step 2: parameter interactions
 
     nMinerSleep = GetArg("-minersleep", 500);
+    fUseFastIndex = GetBoolArg("-fastindex", true);
 
     fTestNet = GetBoolArg("-testnet");
     if (fTestNet) {
