@@ -37,3 +37,6 @@ Download and extract the [Snappy source distribution](http://snappy.googlecode.c
 	    msbuild.exe /p:Configuration=Benchmark /p:Platform=x64 /p:Snappy=..\snappy-1.0.5
 	    x64\Benchmark\leveldb.exe
 
+## Building with mingw32/msys
+
+        TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a CXX='gcc -g'
